@@ -74,6 +74,10 @@ export default {
             if (status === 0) {
               // 登录成功
               // 跳转到Admin首页
+              this.$store.commit('setUserInformation', {
+                username: message.uname,
+                realname: message.upwd
+              })
               localStorage.setItem('realname', message.realname)
               localStorage.setItem('uname', message.uname)
               this.$router.push("/admin");
@@ -119,10 +123,10 @@ export default {
   background-color: #fff;
 }
 .login-wrong {
-    width: 50%;
-    position: absolute;
-    left: 50%;
-    top: -20%;
-    transform: translateX(-50%);
+  width: 50%;
+  position: absolute;
+  left: 50%;
+  top: -20%;
+  transform: translateX(-50%);
 }
 </style>

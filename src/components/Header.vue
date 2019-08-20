@@ -2,13 +2,14 @@
   <el-row type="flex" justify="space-between" align="middle">
     <i class="el-icon-back" @click="handleUpdateCollapse"></i>
     <div class="user">
-      {{realname}}
+      {{user.realname}}
       <span @click="handleLoout">退出</span>
     </div>
   </el-row>
 </template>
 
 <script>
+import {mapState} from 'vuex'
 export default {
   data() {
     return {
@@ -21,6 +22,12 @@ export default {
     this.uname = localStorage.getItem("uname");
     this.realname = localStorage.getItem("realname");
   },
+  computed: {
+    ...mapState({
+      user: 'user'
+    })
+  },
+  
   methods: {
     handleUpdateCollapse() {
       this.$emit("updatecollapse");

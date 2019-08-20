@@ -10,7 +10,7 @@
         </el-header>
         <el-main>
             <!-- 面包屑 -->
-          <el-breadcrumb separator-class="el-icon-arrow-right">
+          <el-breadcrumb separator-class="el-icon-arrow-right" style="margin-bottom: 20px;">
             <el-breadcrumb-item v-for="(item, index) in getBreadCrumbs" :key="index">{{item}}</el-breadcrumb-item>
           </el-breadcrumb>
       
@@ -54,7 +54,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="less" scoped>
 .admin-container {
   width: 100%;
   height: 100%;

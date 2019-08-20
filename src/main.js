@@ -10,6 +10,10 @@ import Admin from './pages/Admin.vue'
 import GoodsList from './pages/GoodsList.vue'
 import GoodsAdd from './pages/GoodsAdd.vue'
 import GoodsEdit from './pages/GoodsEdit.vue'
+import CategoryList from './pages/CategoryList.vue'
+import OrderList from './pages/OrderList.vue'
+import AccountList from './pages/AccountList.vue'
+import store from './store'
 // 配置路由信息
 var routes = [{
         path: '/',
@@ -37,6 +41,21 @@ var routes = [{
                 path: 'goodsedit/:id',
                 component: GoodsEdit,
                 meta: '修改商品'
+            },
+            {
+                path: 'categorylist',
+                component: CategoryList,
+                meta: '栏目列表'
+            },
+            {
+                path: 'orderlist',
+                component: OrderList,
+                meta: '订单列表'
+            },
+            {
+                path: 'accountlist',
+                component: AccountList,
+                meta: '会员列表'
             }
         ]
 
@@ -68,6 +87,8 @@ axios.defaults.baseURL = 'http://localhost:8899'
 Vue.config.productionTip = false
 
 new Vue({
+    // 将store挂载到根实例
+    store,
     // 将路由实例挂载到根实例
     router,
     render: h => h(App),

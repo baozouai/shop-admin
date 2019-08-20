@@ -45,17 +45,30 @@ export default {
           ]
         },
         {
+          icon: "el-icon-s-order",
+          name: "商城订单",
+          children: [
+            {
+              name: "订单管理",
+              src: "/admin/orderlist"
+            }
+          ]
+        },
+        {
           icon: "el-icon-user-solid",
           name: "会员管理",
           children: [
             {
               name: "会员列表",
-              src: "admin/accountlist"
+              src: "/admin/accountlist"
             }
           ]
         }
       ]
     };
+  },
+  methods: {
+    
   },
   //可以接受的属性
   props: {

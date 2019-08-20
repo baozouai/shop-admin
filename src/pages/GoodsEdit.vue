@@ -129,7 +129,7 @@ export default {
       categories: [],
       idToCategory: {},
       categoryToId: {},
-      categoryName: '',
+      categoryName: "",
       imageUrl: "",
       dialogImageUrl: "",
       dialogVisible: false
@@ -137,12 +137,8 @@ export default {
   },
   methods: {
     handleAvatarSuccess(res, file) {
-      //  console.log(res);
-      //  console.log(file);
       this.imageUrl = URL.createObjectURL(file.raw);
-      res.shorturl = '/' + res.shorturl
-      console.log(res);
-      // console.log(this.imageUrl);
+      res.shorturl = "/" + res.shorturl;
       this.form.imgList = [res];
     },
     beforeAvatarUpload(file) {
@@ -158,76 +154,62 @@ export default {
       return isJPGPNG && isLt2M;
     },
     handleRemove(file, fileList) {
-      this.form.fileList = fileList
+      this.form.fileList = fileList;
     },
     // 相册成功上传
-    handlePictureCardSuccess(res, file, fileList) {
-      // this.form.fileList = fileList.map(v => v.response);
-      // console.log(this.form.fileList);
-            // this.form.fileList.push(res)
-          //  console.log(res);
-            this.form.fileList.push(res)
-            // console.log(this.form.fileList);
-            // console.log(res);
-
+    handlePictureCardSuccess(res) {
+      this.form.fileList.push(res);
     },
     handlePictureCardPreview(file) {
       this.dialogImageUrl = file.url;
       this.dialogVisible = true;
-      console.log(file);
     },
     // 保存更改
     onEdit() {
-    //   发送更改请求
-    this.form.category_id = this.categoryToId[this.categoryName]
-    this.$axios({
-        method: 'POST',
+      //   发送更改请求
+      this.form.category_id = this.categoryToId[this.categoryName];
+      this.$axios({
+        method: "POST",
         url: `/admin/goods/edit/${this.$route.params.id}`,
         data: this.form,
         withCredentials: true
-    }).then(res => {
-        console.log(res);
-        const {status, message} = res.data
+      }).then(res => {
+        const { status, message } = res.data;
         if (status === 0) {
-            this.$message({
-                type: 'success',
-                message
-            })
-            // 新增商品成功后回到商品列表
-            this.$router.back()
+          this.$message({
+            type: "success",
+            message
+          });
+          // 新增商品成功后回到商品列表
+          this.$router.back();
         }
-    })
+      });
     }
   },
   mounted() {
-    // console.log(this.$route);
     // 获取id
     this.$axios({
-      url: '/admin/category/getlist/goods'
+      url: "/admin/category/getlist/goods"
     }).then(res => {
-      const {status, message} = res.data
+      const { status, message } = res.data;
       if (status === 0) {
-        this.categories = message
+        this.categories = message;
         message.forEach(v => {
-          this.idToCategory[v.category_id] = v.title
-          this.categoryToId[v.title] = v.category_id
-        })
-         
-        console.log(this.categoryToId);
+          this.idToCategory[v.category_id] = v.title;
+          this.categoryToId[v.title] = v.category_id;
+        });
       }
-    })
-    const {id} = this.$route.params
+    });
+    const { id } = this.$route.params;
     // 请求商品信息
     this.$axios({
       url: `/admin/goods/getgoodsmodel/${id}`
     }).then(res => {
-      const {status, message} = res.data
+      const { status, message } = res.data;
       if (status === 0) {
         this.form = message;
-        this.imageUrl = message.imgList[0].url
-        // console.log(this.form.fileList);
-         this.categoryName = this.idToCategory[this.form.category_id]
-        //  console.log(this.categoryName);
+        this.imageUrl = message.imgList[0].url;
+        this.categoryName = this.idToCategory[this.form.category_id];
       }
     });
   },
