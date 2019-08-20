@@ -8,6 +8,8 @@ import 'element-ui/lib/theme-chalk/index.css';
 import Login from './pages/Login.vue'
 import Admin from './pages/Admin.vue'
 import GoodsList from './pages/GoodsList.vue'
+import GoodsAdd from './pages/GoodsAdd.vue'
+import GoodsEdit from './pages/GoodsEdit.vue'
 // 配置路由信息
 var routes = [{
         path: '/',
@@ -20,14 +22,24 @@ var routes = [{
     {
         path: '/admin',
         component: Admin,
-        meta:'管理后台',
-        children: [
-            {
+        meta: '管理后台',
+        children: [{
                 path: 'goodslist',
                 component: GoodsList,
                 meta: '商品管理'
+            },
+            {
+                path: 'goodsadd',
+                component: GoodsAdd,
+                meta: '新增商品'
+            },
+            {
+                path: 'goodsedit/:id',
+                component: GoodsEdit,
+                meta: '修改商品'
             }
         ]
+
     }
 ]
 // 注册全局路由

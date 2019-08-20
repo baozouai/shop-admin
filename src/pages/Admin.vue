@@ -13,6 +13,7 @@
           <el-breadcrumb separator-class="el-icon-arrow-right">
             <el-breadcrumb-item v-for="(item, index) in getBreadCrumbs" :key="index">{{item}}</el-breadcrumb-item>
           </el-breadcrumb>
+      
           <router-view></router-view>
         </el-main>
       </el-container>
@@ -24,6 +25,7 @@
 // 导入组件
 import Header from "../components/Header.vue";
 import Aside from "../components/Aside.vue";
+import GoodsAdd from "./GoodsAdd.vue";
 export default {
   data() {
     return {
@@ -38,7 +40,8 @@ export default {
   },
   components: {
     Header,
-    Aside
+    Aside,
+    GoodsAdd
   },
   computed: {
       getBreadCrumbs() {
