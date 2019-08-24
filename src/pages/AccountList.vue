@@ -186,7 +186,7 @@ export default {
     getGoodsList() {
       // 发起获取商品请求
       this.$axios({
-        url: `/admin//account/getlist?pageIndex=${this.currentPage}&pageSize=${this.pageSize}&searchvalue=${this.user_name}`
+        url: `/admin/account/getlist?pageIndex=${this.currentPage}&pageSize=${this.pageSize}&searchvalue=${this.user_name}`
       }).then(res => {
         console.log(res);
         if (res.status === 200) {

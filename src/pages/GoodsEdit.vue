@@ -207,8 +207,10 @@ export default {
     }).then(res => {
       const { status, message } = res.data;
       if (status === 0) {
-        this.form = message;
+        this.form = message
+          
         this.imageUrl = message.imgList[0].url;
+        this.fileList
         this.categoryName = this.idToCategory[this.form.category_id];
       }
     });
