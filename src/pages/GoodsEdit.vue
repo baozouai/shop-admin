@@ -1,5 +1,5 @@
 <template>
-  <div class="goodadd">
+  <div>
     <el-form ref="form" :model="form" label-width="80px">
       <el-form-item label="所属类别">
         <el-select v-model="categoryName" placeholder="请选择类别">
@@ -80,8 +80,8 @@
         <quill-editor ref="myTextEditor" v-model="form.content"></quill-editor>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="onEdit">保存更改</el-button>
-        <el-button>取消</el-button>
+        <el-button type="primary" @click="onAlter">保存更改</el-button>
+        <el-button @click="onCancel">取消</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -136,11 +136,13 @@ export default {
     };
   },
   methods: {
+    // 上传成功的回调
     handleAvatarSuccess(res, file) {
       this.imageUrl = URL.createObjectURL(file.raw);
       res.shorturl = "/" + res.shorturl;
       this.form.imgList = [res];
     },
+    // 上传图片前的校验，图片必须是jpg或者png格式，且不超过2MB
     beforeAvatarUpload(file) {
       var isJPGPNG = true;
       const isLt2M = file.size / 1024 / 1024 < 2;
@@ -153,20 +155,24 @@ export default {
       }
       return isJPGPNG && isLt2M;
     },
-    handleRemove(file, fileList) {
-      this.form.fileList = fileList;
-    },
+
     // 相册成功上传
     handlePictureCardSuccess(res) {
       this.form.fileList.push(res);
     },
+    // 相册预览
     handlePictureCardPreview(file) {
       this.dialogImageUrl = file.url;
       this.dialogVisible = true;
     },
+    // 移除图片后剩下的图片列表重新赋值
+    handleRemove(file, fileList) {
+      this.form.fileList = fileList;
+    },
     // 保存更改
-    onEdit() {
-      //   发送更改请求
+    onAlter() {
+      // 发送更改请求
+      // 获取分类的id
       this.form.category_id = this.categoryToId[this.categoryName];
       this.$axios({
         method: "POST",
@@ -182,38 +188,49 @@ export default {
           });
           // 新增商品成功后回到商品列表
           this.$router.back();
+        } else {
+          this.$message({
+            type: "error",
+            message: "请检查是否有数据未填写"
+          });
         }
       });
-    }
-  },
-  mounted() {
+    },
+    // 取消更改,返回上一页
+    onCancel() {
+      this.$router.back();
+    },
     // 获取id
-    this.$axios({
-      url: "/admin/category/getlist/goods"
-    }).then(res => {
-      const { status, message } = res.data;
-      if (status === 0) {
-        this.categories = message;
-        message.forEach(v => {
-          this.idToCategory[v.category_id] = v.title;
-          this.categoryToId[v.title] = v.category_id;
-        });
-      }
-    });
-    const { id } = this.$route.params;
-    // 请求商品信息
-    this.$axios({
+    getAllIds() {
+      this.$axios({
+        url: "/admin/category/getlist/goods"
+      }).then(res => {
+        const { status, message } = res.data;
+        if (status === 0) {
+          this.categories = message;
+          message.forEach(v => {
+            this.idToCategory[v.category_id] = v.title;
+            this.categoryToId[v.title] = v.category_id;
+          });
+        }
+      });
+      const { id } = this.$route.params;
+      // 获取对应商品信息
+      this.$axios({
       url: `/admin/goods/getgoodsmodel/${id}`
     }).then(res => {
       const { status, message } = res.data;
       if (status === 0) {
-        this.form = message
-          
+        this.form = message;
         this.imageUrl = message.imgList[0].url;
-        this.fileList
         this.categoryName = this.idToCategory[this.form.category_id];
       }
     });
+    }
+  },
+  mounted() {
+    // 页面刚加载就获取商品信息
+    this.getAllIds()
   },
   components: {
     quillEditor

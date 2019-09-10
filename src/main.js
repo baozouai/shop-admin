@@ -15,9 +15,10 @@ import OrderList from './pages/OrderList.vue'
 import AccountList from './pages/AccountList.vue'
 import store from './store'
 // 配置路由信息
-var routes = [{
+var routes = [
+    {
         path: '/',
-        redirect: '/admin'
+        redirect: '/admin/goodslist'
     },
     {
         path: '/login',
@@ -28,35 +29,35 @@ var routes = [{
         component: Admin,
         meta: '管理后台',
         children: [{
-                path: 'goodslist',
-                component: GoodsList,
-                meta: '商品管理'
-            },
-            {
-                path: 'goodsadd',
-                component: GoodsAdd,
-                meta: '新增商品'
-            },
-            {
-                path: 'goodsedit/:id',
-                component: GoodsEdit,
-                meta: '修改商品'
-            },
-            {
-                path: 'categorylist',
-                component: CategoryList,
-                meta: '栏目列表'
-            },
-            {
-                path: 'orderlist',
-                component: OrderList,
-                meta: '订单列表'
-            },
-            {
-                path: 'accountlist',
-                component: AccountList,
-                meta: '会员列表'
-            }
+            path: 'goodslist',
+            component: GoodsList,
+            meta: '商品管理',
+        },
+        {
+            path: 'goodsadd',
+            component: GoodsAdd,
+            meta: '新增商品'
+        },
+        {
+            path: 'goodsedit/:id',
+            component: GoodsEdit,
+            meta: '修改商品'
+        },
+        {
+            path: 'categorylist',
+            component: CategoryList,
+            meta: '栏目列表'
+        },
+        {
+            path: 'orderlist',
+            component: OrderList,
+            meta: '订单列表'
+        },
+        {
+            path: 'accountlist',
+            component: AccountList,
+            meta: '会员列表'
+        }
         ]
 
     }
@@ -69,6 +70,7 @@ var router = new VueRouter({
     routes,
     mode: 'history'
 })
+
 // 导航守卫
 router.beforeEach((to, from, next) => {
     // 如果已登录获取跳转到登录页，则继续

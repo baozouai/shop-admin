@@ -47,7 +47,7 @@ export default {
           // 返回
           return;
         } else {
-          // 如果上面的循环找不到父元素，且当前元素v还有子数组，则其孩子数组遍历
+          // 如果上面的找不到父元素，且当前元素v还有子数组，则其孩子数组遍历
           if (v.children) {
             this.loop(v.children, item);
           }
@@ -60,12 +60,8 @@ export default {
     this.$axios({
       url: "/admin/category/getlist/goods"
     }).then(res => {
-      // console.log(res.data);
       if (res.data.status === 0) {
         const {message} = res.data
-        // console.log(res.data.message);
-        // this.data = res.data.message;
-        
         // 遍历获取的初始种类数组
         message.forEach(v => {
             // 如果元素的parent_id为0，则为根元素
@@ -79,8 +75,6 @@ export default {
                 }
             }
         })
-        // this.data = arr
-        
       }
     });
   }

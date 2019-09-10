@@ -13,6 +13,7 @@
         <i :class="item.icon"></i>
         <span>{{item.name}}</span>
       </template>
+      <!-- 导航子项部分 -->
       <el-menu-item
         v-for="(subItem, subIndex) in item.children"
         :key="subIndex"
@@ -20,6 +21,7 @@
       >
         <router-link :to="subItem.src">{{subItem.name}}</router-link>
       </el-menu-item>
+      <!-- 导航子项部分-->
     </el-submenu>
   </el-menu>
 </template>
@@ -67,9 +69,7 @@ export default {
       ]
     };
   },
-  methods: {
-    
-  },
+  methods: {},
   //可以接受的属性
   props: {
     collapse: {
@@ -78,7 +78,7 @@ export default {
       // 默认值
       value: false
     }
-  },
+  }
 };
 </script>
 

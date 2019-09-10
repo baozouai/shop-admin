@@ -5,7 +5,7 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
     state: {
         user: {
-            username: localStorage.getItem('uname'),
+            uname: localStorage.getItem('uname'),
             realname: localStorage.getItem('realname')
         }
     },

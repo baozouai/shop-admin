@@ -1,6 +1,6 @@
 <template>
   <div class="goodslist">
-    <!-- 新增、删除按钮及搜索框 -->
+    <!-- 删除按钮及搜索框 -->
     <el-row type="flex" justify="space-between" align="middle" class="tool-tips">
       <el-col>
         <el-button type="danger" @click="handleDeleteBatch">批量删除</el-button>
@@ -8,7 +8,7 @@
       <el-col align="right">
         <el-input
           v-model="user_name"
-          placeholder="请输入内容"
+          placeholder="请输入会员名称"
           class="input-with-select"
           @change="handleSearch"
         >
@@ -71,27 +71,20 @@ export default {
   methods: {
     // 搜索
     handleSearch() {
-      this.getGoodsList();
+      this.getAccountList();
     },
     handleSizeChange(val) {
-      console.log(`每页 ${val} 条`);
       this.pageSize = val;
+      // 重新发起请求之前要情况会员名
       this.user_name = ''
-      this.getGoodsList();
+      this.getAccountList();
     },
     handleCurrentChange(val) {
-      console.log(`当前页: ${val}`);
       this.currentPage = val;
+      // 重新发起请求之前要情况会员名
       this.user_name = ''
-      this.getGoodsList();
+      this.getAccountList();
     },
-    handleEdit(val) {
-      // 点击编辑获取商品的id
-      const { id } = val;
-      // 跳转到编辑页面
-      this.$router.push(`./GoodsEdit/${id}`);
-    },
-
     // 删除单行数据
     handleDelete(val) {
       // 弹窗确认框
@@ -118,7 +111,7 @@ export default {
                 message
               });
               //   重新获取数据
-              this.getGoodsList();
+              this.getAccountList();
             } else {
               // 提示删除失败
               this.$message({
@@ -138,12 +131,12 @@ export default {
       if (!ids) {
         this.$message({
           type: "warning",
-          message: "您还没选择任何商品呢"
+          message: "您还没选择任何会员呢"
         });
         return;
       }
       // 弹窗确认框
-      this.$confirm("是否删除所选商品?", "提示", {
+      this.$confirm("是否删除所选会员?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
@@ -155,7 +148,6 @@ export default {
             url: `/admin/goods/del/${ids}`
           }).then(res => {
             // 解构赋值
-            // console.log(res);
             const { status, message } = res.data;
             // 如果状态码为0，则退出成功
             if (status === 0) {
@@ -165,7 +157,7 @@ export default {
                 message
               });
               //   重新获取数据
-              this.getGoodsList();
+              this.getAccountList();
             } else {
               // 提示删除失败
               this.$message({
@@ -183,16 +175,15 @@ export default {
       var ids = val.map(v => v.id);
       this.ids = ids;
     },
-    getGoodsList() {
-      // 发起获取商品请求
+    getAccountList() {
+      // 发起获取会员请求
       this.$axios({
         url: `/admin/account/getlist?pageIndex=${this.currentPage}&pageSize=${this.pageSize}&searchvalue=${this.user_name}`
       }).then(res => {
-        console.log(res);
         if (res.status === 200) {
           const {totalcount, message} = res.data
           this.totalcount = totalcount;
-          message.for
+          // 这里修改时间格式
           this.tableData = message.map(v => {
             return {...v, reg_time: v.reg_time.replace('T', ' ').slice(0, -5)}
           })
@@ -201,8 +192,8 @@ export default {
     }
   },
   mounted() {
-    //   页面加载成功后获取商品列表
-    this.getGoodsList();
+    //   页面加载成功后获取会员列表
+    this.getAccountList();
   },
   
     

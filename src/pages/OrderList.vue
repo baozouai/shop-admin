@@ -1,12 +1,18 @@
 <template>
   <div class="goodslist">
-    <!-- 新增、删除按钮及搜索框 -->
+    <!-- 删除按钮及搜索框 -->
     <el-row type="flex" justify="space-between" align="middle" class="tool-tips">
-      <el-col>
+        <el-col>
         <el-button type="danger" @click="handleDeleteBatch">批量删除</el-button>
       </el-col>
       <el-col align="right">
-        <el-input v-model="vipname" placeholder="请输入内容" class="input-with-select" @change="handleSearch">
+        <!-- 这里@keyup.enter需要加上native -->
+        <el-input
+          v-model="vipname"
+          placeholder="请输入会员名"
+          class="input-with-select"
+          @keyup.enter.native="handleSearch"
+        >
           <el-button slot="append" icon="el-icon-search" @click="handleSearch"></el-button>
         </el-input>
       </el-col>
@@ -29,8 +35,7 @@
       <el-table-column prop="statusName" align="center" label="状态"></el-table-column>
       <el-table-column label="操作" align="center">
         <template slot-scope="scope">
-          <el-button size="mini" @click="handleEdit(scope.row)">编辑</el-button>
-          <el-button size="mini" type="danger" @click="handleDelete(scope.row)">查看</el-button>
+            <el-button type="danger" @click="handleDelete(scope.row)" icon="el-icon-delete" circle></el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -63,25 +68,20 @@ export default {
   },
 
   methods: {
-    // 搜索
     handleSearch() {
-      this.getGoodsList();
+      // 根据搜索值获取商品
+      this.getOrderList();
     },
+    // 每页条数改变的时候
     handleSizeChange(val) {
-      console.log(`每页 ${val} 条`);
+      // 重新改变每页条数
       this.pageSize = val;
-      this.getGoodsList();
+      // 并重新获取数据
+      this.getOrderList();
     },
     handleCurrentChange(val) {
-      console.log(`当前页: ${val}`);
       this.currentPage = val;
-      this.getGoodsList();
-    },
-    handleEdit(val) {
-      // 点击编辑获取商品的id
-      const { id } = val;
-      // 跳转到编辑页面
-      this.$router.push(`./GoodsEdit/${id}`);
+      this.getOrderList();
     },
 
     // 删除单行数据
@@ -110,7 +110,7 @@ export default {
                 message
               });
               //   重新获取数据
-              this.getGoodsList();
+              this.getOrderList();
             } else {
               // 提示删除失败
               this.$message({
@@ -130,12 +130,12 @@ export default {
       if (!ids) {
         this.$message({
           type: "warning",
-          message: "您还没选择任何商品呢"
+          message: "您还没选择任何订单呢"
         });
         return;
       }
       // 弹窗确认框
-      this.$confirm("是否删除所选商品?", "提示", {
+      this.$confirm("是否删除所选订单?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
@@ -144,10 +144,9 @@ export default {
           // 确定则发送删除请求
           //   获取id
           this.$axios({
-            url: `/admin/goods/del/${ids}`
+            url: `/admin/order/del/${ids}`
           }).then(res => {
             // 解构赋值
-            // console.log(res);
             const { status, message } = res.data;
             // 如果状态码为0，则退出成功
             if (status === 0) {
@@ -157,7 +156,7 @@ export default {
                 message
               });
               //   重新获取数据
-              this.getGoodsList();
+              this.getOrderList();
             } else {
               // 提示删除失败
               this.$message({
@@ -175,14 +174,12 @@ export default {
       var ids = val.map(v => v.id);
       this.ids = ids;
     },
-    getGoodsList() {
-      // 发起获取商品请求
+    getOrderList() {
+      // 发起获取订单请求
       this.$axios({
         url: `/admin/order/getorderlist?orderstatus=${this.orderstatus}&vipname=${this.vipname}&pageIndex=${this.currentPage}&pageSize=${this.pageSize}`
       }).then(res => {
-        console.log(res);
         if (res.status === 200) {
-          // console.log(res);
           this.totalcount = res.data.totalcount;
           this.tableData = res.data.message;
         }
@@ -190,8 +187,8 @@ export default {
     }
   },
   mounted() {
-    //   页面加载成功后获取商品列表
-    this.getGoodsList();
+    //   页面加载成功后获取订单列表
+    this.getOrderList();
   }
 };
 </script>

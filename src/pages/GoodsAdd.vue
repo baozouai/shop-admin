@@ -29,7 +29,7 @@
         <!-- action：上传图片的地址
                 show-file-list: 是否展示文件列表
                 on-success：上传成功之后的函数，有3个参数
-                before-upload：上传之前的判断
+                before-upload：使用 before-upload 限制用户上传的图片格式和大小
         -->
         <el-upload
           class="avatar-uploader"
@@ -76,7 +76,7 @@
 
       <!-- quill-editor -->
       <el-form-item label="内容描述">
-        <quill-editor ref="myTextEditor" v-model="form.content"></quill-editor>
+        <quill-editor v-model="form.content"></quill-editor>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="onSubmit">立即添加</el-button>
@@ -133,13 +133,17 @@ export default {
   },
   methods: {
     handleAvatarSuccess(res, file) {
-      //  console.log(res);
-      //  console.log(file);
+      // res格式为：
+      // {
+      //   name: "v2-0437bbcebeb2dc2ec930ba58649d066a_b.jpg", 
+      //   url: "http://127.0.0.1:8899/upload/imgs/2waTrMESXoEGfrnyqZqmLOXS.jpg", 
+      //   shorturl: "upload/imgs/2waTrMESXoEGfrnyqZqmLOXS.jpg"
+      // }
       this.imageUrl = URL.createObjectURL(file.raw);
-      // console.log(this.imageUrl);
-      res.shorturl = '/' + res.shorturl
+      res.shorturl = "/" + res.shorturl;
       this.form.imgList = [res];
     },
+    // 上传图片前的校验，图片必须是jpg或者png格式，且不超过2MB
     beforeAvatarUpload(file) {
       var isJPGPNG = true;
       const isLt2M = file.size / 1024 / 1024 < 2;
@@ -152,50 +156,45 @@ export default {
       }
       return isJPGPNG && isLt2M;
     },
-    handleRemove(file, fileList) {
-      console.log(file);
-    },
     // 相册成功上传
     handlePictureCardSuccess(res, file, fileList) {
-      console.log(fileList);
       this.form.fileList = fileList.map(v => v.response);
-      console.log(this.form.fileList);
     },
+    // 图片预览
     handlePictureCardPreview(file) {
       this.dialogImageUrl = file.url;
       this.dialogVisible = true;
-      console.log(file);
+    },
+    handleRemove(file, fileList) {
+      // console.log(file);
     },
     onSubmit() {
-    //   发送创建请求
-    console.log(this.form);
-    this.$axios({
-        method: 'POST',
-        url: '/admin/goods/add/goods',
+      //   发送创建请求
+      this.$axios({
+        method: "POST",
+        url: "/admin/goods/add/goods",
         data: this.form,
         withCredentials: true
-    }).then(res => {
-        console.log(res);
-        const {status, message} = res.data
+      }).then(res => {
+        const { status, message } = res.data;
         if (status === 0) {
-            this.$message({
-                type: 'success',
-                message
-            })
-            // 新增商品成功后回到商品列表
-            this.$router.back()
+          this.$message({
+            type: "success",
+            message
+          });
+          // 新增商品成功后回到商品列表
+          this.$router.back();
         }
-    })
+      });
     }
   },
   mounted() {
+    // 页面加载时获取分类
     this.$axios({
       url: "/admin/category/getlist/goods"
     }).then(res => {
-      // console.log(res.data);
       if (res.data.status === 0) {
         this.categories = res.data.message;
-        // console.log(res.data.message);
       }
     });
   },
