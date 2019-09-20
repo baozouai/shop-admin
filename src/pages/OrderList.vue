@@ -30,8 +30,11 @@
       <el-table-column label="订单ID" align="center" prop="id"></el-table-column>
       <el-table-column label="订单编号" align="center" prop="order_no"></el-table-column>
       <el-table-column prop="user_name" align="center" label="会员名称"></el-table-column>
+      <el-table-column prop="mobile" align="center" label="手机"></el-table-column>
       <el-table-column prop="area" align="center" label="地址"></el-table-column>
       <el-table-column prop="expressTitle" align="center" label="快递"></el-table-column>
+      <el-table-column prop="express_fee" align="center" label="快递费"></el-table-column>
+      <el-table-column prop="paymentTitle" align="center" label="支付方式"></el-table-column>
       <el-table-column prop="statusName" align="center" label="状态"></el-table-column>
       <el-table-column label="操作" align="center">
         <template slot-scope="scope">
@@ -63,7 +66,9 @@ export default {
       pageSize: 4,
       totalcount: 0,
       orderstatus: "",
-      vipname: ""
+      vipname: "",
+      express_fee: '',
+      paymentTitle: ''
     };
   },
 
@@ -179,7 +184,8 @@ export default {
       this.$axios({
         url: `/admin/order/getorderlist?orderstatus=${this.orderstatus}&vipname=${this.vipname}&pageIndex=${this.currentPage}&pageSize=${this.pageSize}`
       }).then(res => {
-        if (res.status === 200) {
+
+        if (res.data.status === 0) {
           this.totalcount = res.data.totalcount;
           this.tableData = res.data.message;
         }

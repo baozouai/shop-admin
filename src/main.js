@@ -85,6 +85,7 @@ router.beforeEach((to, from, next) => {
 Vue.prototype.$axios = axios
 // 每次发请求都加上基本路径
 axios.defaults.baseURL = 'http://localhost:8899'
+axios.defaults.withCredentials = true
 // 是否是生产环境
 Vue.config.productionTip = false
 

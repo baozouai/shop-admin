@@ -139,7 +139,7 @@ export default {
     // 上传成功的回调
     handleAvatarSuccess(res, file) {
       this.imageUrl = URL.createObjectURL(file.raw);
-      res.shorturl = "/" + res.shorturl;
+      res.shorturl = res.shorturl;
       this.form.imgList = [res];
     },
     // 上传图片前的校验，图片必须是jpg或者png格式，且不超过2MB
@@ -203,7 +203,7 @@ export default {
     // 获取id
     getAllIds() {
       this.$axios({
-        url: "/admin/category/getlist/goods"
+        url: "/admin/category/getlist"
       }).then(res => {
         const { status, message } = res.data;
         if (status === 0) {

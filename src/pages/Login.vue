@@ -73,10 +73,6 @@ export default {
             if (status === 0) {
               // 登录成功
               // 跳转到Admin首页
-              // this.$store.commit('setUserInformation', {
-              //   uname: message.uname,
-              //   realname: message.upwd
-              // })
               localStorage.setItem('realname', message.realname)
               localStorage.setItem('uname', message.uname)
               this.$router.push("/admin/goodslist");

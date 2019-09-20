@@ -32,6 +32,7 @@
       </el-table-column>
       <el-table-column prop="categoryname" align="center" label="类型"></el-table-column>
       <el-table-column prop="sell_price" align="center" label="价格"></el-table-column>
+      <el-table-column prop="add_time" align="center" label="添加时间"></el-table-column>
       <el-table-column label="操作" align="center">
         <template slot-scope="scope">
           <el-button type="primary" @click="handleEdit(scope.row)" icon="el-icon-edit" circle></el-button>
@@ -203,12 +204,16 @@ export default {
       // 发起获取商品请求
       this.$axios({
         // 由当前页、每页商品数量和搜索值决定
-        url: `/admin/goods/getlist?pageIndex=${this.currentPage}&pageSize=${this.pageSize}&searchvalue=${this.searchValue}`
+        url: `/admin/goods/getlist?pageIndex=${this.currentPage}&pageSize=${this.pageSize}&searchvalue=${this.searchValue}`,
+        withCredentials: true
       }).then(res => {
         if (res.status === 200) {
           // 获得商品总数并将总数据赋值给表格
+          console.log(res.data)
           this.totalcount = res.data.totalcount;
-          this.tableData = res.data.message;
+          this.tableData = res.data.message.map(v => {
+           return  {...v, add_time: v.add_time.replace('T', ' ').slice(0,-5)}
+          })
         }
       });
     }

@@ -63,6 +63,7 @@
           :on-success="handlePictureCardSuccess"
           :on-preview="handlePictureCardPreview"
           :on-remove="handleRemove"
+          multiple
         >
           <i class="el-icon-plus"></i>
         </el-upload>
@@ -104,7 +105,6 @@ export default {
         market_price: "",
         sell_price: "",
         status: false,
-        is_slide: false,
         is_top: false,
         is_hot: false,
         zhaiyao: "",
@@ -140,7 +140,7 @@ export default {
       //   shorturl: "upload/imgs/2waTrMESXoEGfrnyqZqmLOXS.jpg"
       // }
       this.imageUrl = URL.createObjectURL(file.raw);
-      res.shorturl = "/" + res.shorturl;
+      res.shorturl = res.shorturl;
       this.form.imgList = [res];
     },
     // 上传图片前的校验，图片必须是jpg或者png格式，且不超过2MB
@@ -176,6 +176,7 @@ export default {
         data: this.form,
         withCredentials: true
       }).then(res => {
+
         const { status, message } = res.data;
         if (status === 0) {
           this.$message({
@@ -191,7 +192,7 @@ export default {
   mounted() {
     // 页面加载时获取分类
     this.$axios({
-      url: "/admin/category/getlist/goods"
+      url: "/admin/category/getlist"
     }).then(res => {
       if (res.data.status === 0) {
         this.categories = res.data.message;

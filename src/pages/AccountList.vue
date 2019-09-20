@@ -10,7 +10,7 @@
           v-model="user_name"
           placeholder="请输入会员名称"
           class="input-with-select"
-          @change="handleSearch"
+          @keyup.enter.native="handleSearch"
         >
           <el-button slot="append" icon="el-icon-search" @click="handleSearch"></el-button>
         </el-input>
@@ -34,7 +34,7 @@
       </el-table-column>
       <el-table-column label="操作" align="center">
         <template slot-scope="scope">
-          <el-button size="mini" type="danger" @click="handleDelete(scope.row)">查看</el-button>
+          <el-button size="mini" type="danger" @click="handleDelete(scope.row)" icon="el-icon-delete" circle></el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -71,6 +71,7 @@ export default {
   methods: {
     // 搜索
     handleSearch() {
+      console.log(this.user_name)
       this.getAccountList();
     },
     handleSizeChange(val) {
@@ -178,15 +179,13 @@ export default {
     getAccountList() {
       // 发起获取会员请求
       this.$axios({
-        url: `/admin/account/getlist?pageIndex=${this.currentPage}&pageSize=${this.pageSize}&searchvalue=${this.user_name}`
+        url: `/admin/account/getlist?pageIndex=${this.currentPage}&pageSize=${this.pageSize}&username=${this.user_name}`
       }).then(res => {
         if (res.status === 200) {
           const {totalcount, message} = res.data
           this.totalcount = totalcount;
           // 这里修改时间格式
-          this.tableData = message.map(v => {
-            return {...v, reg_time: v.reg_time.replace('T', ' ').slice(0, -5)}
-          })
+          this.tableData = message
         }
       });
     }

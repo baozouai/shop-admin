@@ -8,9 +8,6 @@
   >
     <span class="custom-tree-node" slot-scope="{  data }">
       <span>{{ data.title }}</span>
-      <span>
-        <el-button type="text" size="mini" @click="() => edit(data)">编辑</el-button>
-      </span>
     </span>
   </el-tree>
 </template>
@@ -24,14 +21,6 @@ export default {
   },
 
   methods: {
-    //   编辑
-    edit(data) {
-    //   const parent = node.parent;
-    //   const children = parent.data.children || parent.data;
-    //   const index = children.findIndex(d => d.id === data.id);
-    //   children.splice(index, 1);
-    console.log(data);
-    },
     // 递归获取树行数组
     loop(arr, item) {
       // 数组遍历
@@ -58,7 +47,7 @@ export default {
   mounted() {
     //   记载完毕后获取分类
     this.$axios({
-      url: "/admin/category/getlist/goods"
+      url: "/admin/category/getlist"
     }).then(res => {
       if (res.data.status === 0) {
         const {message} = res.data
