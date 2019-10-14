@@ -2,7 +2,7 @@
   <div class="goodslist">
     <!-- 删除按钮及搜索框 -->
     <el-row type="flex" justify="space-between" align="middle" class="tool-tips">
-        <el-col>
+      <el-col>
         <el-button type="danger" @click="handleDeleteBatch">批量删除</el-button>
       </el-col>
       <el-col align="right">
@@ -38,7 +38,7 @@
       <el-table-column prop="statusName" align="center" label="状态"></el-table-column>
       <el-table-column label="操作" align="center">
         <template slot-scope="scope">
-            <el-button type="danger" @click="handleDelete(scope.row)" icon="el-icon-delete" circle></el-button>
+          <el-button type="danger" @click="handleDelete(scope.row)" icon="el-icon-delete" circle></el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -67,8 +67,8 @@ export default {
       totalcount: 0,
       orderstatus: "",
       vipname: "",
-      express_fee: '',
-      paymentTitle: ''
+      express_fee: "",
+      paymentTitle: ""
     };
   },
 
@@ -150,26 +150,27 @@ export default {
           //   获取id
           this.$axios({
             url: `/admin/order/del/${ids}`
-          }).then(res => {
-            // 解构赋值
-            const { status, message } = res.data;
-            // 如果状态码为0，则退出成功
-            if (status === 0) {
-              // 提示成功删除
-              this.$message({
-                type: "success",
-                message
-              });
-              //   重新获取数据
-              this.getOrderList();
-            } else {
-              // 提示删除失败
-              this.$message({
-                type: "error",
-                message
-              });
-            }
           });
+        })
+        .then(res => {
+          // 解构赋值
+          const { status, message } = res.data;
+          // 如果状态码为0，则退出成功
+          if (status === 0) {
+            // 提示成功删除
+            this.$message({
+              type: "success",
+              message
+            });
+            //   重新获取数据
+            this.getOrderList();
+          } else {
+            // 提示删除失败
+            this.$message({
+              type: "error",
+              message
+            });
+          }
         })
         .catch(() => {
           // 取消的时候什么都不做
@@ -184,7 +185,6 @@ export default {
       this.$axios({
         url: `/admin/order/getorderlist?orderstatus=${this.orderstatus}&vipname=${this.vipname}&pageIndex=${this.currentPage}&pageSize=${this.pageSize}`
       }).then(res => {
-
         if (res.data.status === 0) {
           this.totalcount = res.data.totalcount;
           this.tableData = res.data.message;

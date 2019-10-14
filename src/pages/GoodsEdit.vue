@@ -204,7 +204,8 @@ export default {
     getAllIds() {
       this.$axios({
         url: "/admin/category/getlist"
-      }).then(res => {
+      })
+      .then(res => {
         const { status, message } = res.data;
         if (status === 0) {
           this.categories = message;
@@ -218,7 +219,8 @@ export default {
       // 获取对应商品信息
       this.$axios({
       url: `/admin/goods/getgoodsmodel/${id}`
-    }).then(res => {
+    })
+    .then(res => {
       const { status, message } = res.data;
       if (status === 0) {
         this.form = message;

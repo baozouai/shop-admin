@@ -160,26 +160,27 @@ export default {
           const { id } = val;
           this.$axios({
             url: `/admin/goods/del/${id}`
-          }).then(res => {
-            // 解构赋值
-            const { status, message } = res.data;
-            // 如果状态码为0，则删除成功
-            if (status === 0) {
-              // 提示成功删除
-              this.$message({
-                type: "success",
-                message
-              });
-              // 重新获取数据
-              this.getGoodsList();
-            } else {
-              // 提示删除失败
-              this.$message({
-                type: "error",
-                message
-              });
-            }
           });
+        })
+        .then(res => {
+          // 解构赋值
+          const { status, message } = res.data;
+          // 如果状态码为0，则删除成功
+          if (status === 0) {
+            // 提示成功删除
+            this.$message({
+              type: "success",
+              message
+            });
+            // 重新获取数据
+            this.getGoodsList();
+          } else {
+            // 提示删除失败
+            this.$message({
+              type: "error",
+              message
+            });
+          }
         })
         .catch(() => {
           // 取消的时候什么都不做
@@ -209,11 +210,14 @@ export default {
       }).then(res => {
         if (res.status === 200) {
           // 获得商品总数并将总数据赋值给表格
-          console.log(res.data)
+          console.log(res.data);
           this.totalcount = res.data.totalcount;
           this.tableData = res.data.message.map(v => {
-           return  {...v, add_time: v.add_time.replace('T', ' ').slice(0,-5)}
-          })
+            return {
+              ...v,
+              add_time: v.add_time.replace("T", " ").slice(0, -5)
+            };
+          });
         }
       });
     }
