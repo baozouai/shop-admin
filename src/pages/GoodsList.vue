@@ -158,9 +158,9 @@ export default {
           // 确定则发送删除请求
           //   获取id
           const { id } = val;
-          this.$axios({
+          return this.$axios({
             url: `/admin/goods/del/${id}`
-          });
+          })
         })
         .then(res => {
           // 解构赋值
@@ -210,7 +210,6 @@ export default {
       }).then(res => {
         if (res.status === 200) {
           // 获得商品总数并将总数据赋值给表格
-          console.log(res.data);
           this.totalcount = res.data.totalcount;
           this.tableData = res.data.message.map(v => {
             return {
