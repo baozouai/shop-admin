@@ -1,3 +1,10 @@
+<!--
+ * @Description: 
+ * @Author: Moriaty
+ * @Date: 2019-08-14 16:04:40
+ * @Last modified by: Moriaty
+ * @LastEditTime: 2020-08-03 12:16:12
+-->
 # 项目简介
 
 本项目是基于Vue、Element-UI的后台管理
@@ -38,13 +45,13 @@
 
 ### 1、clone到本地
 
-`git clone https://github.com/baozouai/react-mobile-app.git`
-
+前端：`git clone git@github.com:baozouai/shop-admin.git`
+后端：`git clone git@github.com:baozouai/shop-admin-backend.git`
 ### 2、打开终端，在项目根目录运行以下命令
 
-`npm install`
+前端以及后端：`npm install`
 
-### 3、然后运行`npm start`开启项目
+### 3、然后前端运行`npm run serve`，后端运行`nodemon app.js`开启项目
 
 项目默认运行在`http://localhost:8080/`，可自行修改端口
 
